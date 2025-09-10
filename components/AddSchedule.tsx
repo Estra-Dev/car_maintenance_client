@@ -21,15 +21,17 @@ import {
 import { Plus } from "lucide-react";
 import axios from "axios";
 import { Button } from "./ui/button";
+import next from "next";
 
 const AddSchedule = () => {
   const [isAddDialog, setIsAddDialog] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [formData, setFormData] = useState({
-    vehicle: "",
+    vehiclePlateNo: "",
     serviceType: "",
     scheduledDate: "",
+    nextServiceDate: "",
     priority: "",
     estimatedCost: "",
     note: "",
@@ -42,7 +44,7 @@ const AddSchedule = () => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
-
+  console.log("formDate", formData);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
@@ -50,9 +52,10 @@ const AddSchedule = () => {
 
     // Validate form data
     if (
-      !formData.vehicle ||
+      !formData.vehiclePlateNo ||
       !formData.serviceType ||
       !formData.scheduledDate ||
+      !formData.nextServiceDate ||
       !formData.priority ||
       !formData.estimatedCost ||
       !formData.note
@@ -62,17 +65,18 @@ const AddSchedule = () => {
     }
 
     try {
-      const res = await axios.post("/api/vehicles/create", formData, {
+      const res = await axios.post("/api/maintenance/create", formData, {
         headers: {
           "Content-Type": "application/json",
         },
       });
       if (res.status === 201) {
-        setSuccess("Vehicle added successfully.");
+        setSuccess("Maintenance Scheduled successfully.");
         setFormData({
-          vehicle: "",
+          vehiclePlateNo: "",
           serviceType: "",
           scheduledDate: "",
+          nextServiceDate: "",
           priority: "",
           estimatedCost: "",
           note: "",
@@ -80,7 +84,7 @@ const AddSchedule = () => {
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
-        setError(`Failed to add vehicle. ${error.message}`);
+        setError(`Failed to add PlateNo. ${error.message}`);
       } else {
         setError("Failed to add vehicle.");
       }
@@ -96,8 +100,8 @@ const AddSchedule = () => {
       onOpenChange={() => setIsAddDialog(!isAddDialog)}
     >
       <DialogOverlay className=" fixed inset-0 bg-black/50 backdrop-blur-sm z-10" />
-      <DialogTrigger asChild>
-        <div className=" flex justify-between border-b p-4 mb-4">
+      <DialogTrigger asChild className=" overflow-auto">
+        <div className=" flex flex-col md:flex-row gap-3 justify-between border-b p-4 mb-4">
           <span>
             <h1 className="text-2xl font-bold">Maintenance</h1>
             <p className="text-gray-500/80 text-sm">
@@ -127,26 +131,43 @@ const AddSchedule = () => {
         >
           <div className=" grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="">
-              <label htmlFor="vehicle">Vehicle</label>
+              <label htmlFor="vehiclePlateNo">Vehicle Plate No.</label>
               <input
                 className=" w-full border border-gray-300 p-2"
                 type="text"
-                id="vehicle"
-                name="vehile"
-                value={formData.vehicle}
+                id="vehiclePlateNo"
+                name="vehiclePlateNo"
+                value={formData.vehiclePlateNo}
                 onChange={handleChange}
               />
             </div>
             <div className="">
               <label htmlFor="seviceType">Service Type</label>
-              <input
-                className="border w-full border-gray-300 p-2"
-                type="text"
-                id="serviceType"
+              <Select
                 name="serviceType"
                 value={formData.serviceType}
-                onChange={handleChange}
-              />
+                onValueChange={(value) =>
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    serviceType: value,
+                  }))
+                }
+              >
+                <SelectTrigger className=" w-full border">
+                  <SelectValue placeholder="Select Priority" />
+                </SelectTrigger>
+                <SelectContent className=" bg-lime-500 text-white">
+                  <SelectItem value="oilChange">Oil Change</SelectItem>
+                  <SelectItem value="brakeInspection">
+                    Brake Inspection
+                  </SelectItem>
+                  <SelectItem value="tireRotation">Tire Rotation</SelectItem>
+                  <SelectItem value="annualInspection">
+                    Annual Inspection
+                  </SelectItem>
+                  <SelectItem value="others">Others</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <div className=" grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -162,6 +183,19 @@ const AddSchedule = () => {
               />
             </div>
             <div className="">
+              <label htmlFor="nextServiceDate">Next Service Date</label>
+              <input
+                className="border w-full border-gray-300 p-2"
+                type="date"
+                id="nextServiceDate"
+                name="nextServiceDate"
+                value={formData.nextServiceDate}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div className=" grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="">
               <label htmlFor="estimatedCost">Estimated Cost</label>
               <input
                 className="border w-full border-gray-300 p-2"
@@ -172,8 +206,6 @@ const AddSchedule = () => {
                 onChange={handleChange}
               />
             </div>
-          </div>
-          <div className=" grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="">
               <label htmlFor="priority">Priority</label>
               <Select

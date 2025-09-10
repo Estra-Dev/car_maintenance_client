@@ -54,7 +54,7 @@ const AllVehicles = () => {
   console.log("cars", vehicles);
   useEffect(() => {
     allVehicles();
-  }, [vehicles]);
+  }, []);
 
   return (
     <div>
