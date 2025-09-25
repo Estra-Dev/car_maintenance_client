@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Select,
   SelectValue,
@@ -21,9 +21,21 @@ import {
 import { Plus } from "lucide-react";
 import axios from "axios";
 import { Button } from "./ui/button";
-import next from "next";
+
+interface Vehicle {
+  _id: string;
+  make: string;
+  model: string;
+  year: number;
+  plateNumber: string;
+  assignedTo: string;
+  department: string;
+  status: string;
+  nextService: string;
+}
 
 const AddSchedule = () => {
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [isAddDialog, setIsAddDialog] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -37,6 +49,19 @@ const AddSchedule = () => {
     note: "",
   });
 
+  const allVehicles = async () => {
+    try {
+      const response = await axios.get("/api/vehicles/vehicles");
+      setVehicles(response.data.vehicles);
+    } catch (error) {
+      console.error("Error fetching vehicles:", error);
+    }
+  };
+
+  useEffect(() => {
+    allVehicles();
+  }, []);
+
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -45,6 +70,8 @@ const AddSchedule = () => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
   console.log("formDate", formData);
+
+  
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
@@ -132,14 +159,33 @@ const AddSchedule = () => {
           <div className=" grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="">
               <label htmlFor="vehiclePlateNo">Vehicle Plate No.</label>
-              <input
-                className=" w-full border border-gray-300 p-2"
-                type="text"
-                id="vehiclePlateNo"
+              
+              <Select
                 name="vehiclePlateNo"
                 value={formData.vehiclePlateNo}
-                onChange={handleChange}
-              />
+                onValueChange={(value) =>
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    vehiclePlateNo: value,
+                  }))
+                }
+              >
+                <SelectTrigger className=" w-full border">
+                  <SelectValue placeholder="Select Vehicle Plate No." />
+                </SelectTrigger>
+                <SelectContent className=" bg-lime-500 text-white">
+                  {vehicles.length === 0 ? (
+                    <SelectItem value="">No Vehicles Available</SelectItem>
+                  ) : (
+                    vehicles.map((vehicle) => (
+                      <SelectItem key={vehicle._id} value={vehicle.plateNumber}>
+                        {vehicle.plateNumber} - {vehicle.make} {vehicle.model} (
+                        {vehicle.year})
+                      </SelectItem>
+                    ))
+                  )}
+                </SelectContent>
+              </Select>
             </div>
             <div className="">
               <label htmlFor="seviceType">Service Type</label>
