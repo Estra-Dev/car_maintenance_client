@@ -12,7 +12,8 @@ module.exports = {
     return [
       {
         source: "/api/:path*",
-        destination: "http://localhost:5000/api/:path*",
+        destination: "https://car-mainten-server.onrender.com/api/:path*"
+        // destination: "http://localhost:5000/api/:path*",
       },
     ];
   },
