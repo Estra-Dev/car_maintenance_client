@@ -6,6 +6,7 @@ import Nav from "@/components/Nav";
 import SideBar from "@/components/SideBar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import RootLayoutClient from "@/components/RootLayoutClient";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,9 +34,12 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <Nav />
-          <SideBar />
-          {children}
+          <RootLayoutClient>
+            <Nav />
+            <SideBar />
+            {children}
+
+          </RootLayoutClient>
         </body>
       </html>
     </ClerkProvider>

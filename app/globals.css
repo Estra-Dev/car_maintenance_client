@@ -3,6 +3,24 @@
 
 @custom-variant dark (&:is(.dark *));
 
+
+.car-animation {
+  position: relative;
+  animation: drive 3s linear infinite;
+}
+
+@keyframes drive {
+  0% {
+    transform: translateX(-150%);
+  }
+  50% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(150%);
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
