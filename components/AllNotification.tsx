@@ -155,45 +155,10 @@ const AllNotification = () => {
                 notifications.map((notification, index) => (
                   <div
                     key={notification._id || index}
-                    className="flex items-start gap-4 p-4 border rounded-lg"
+                    className="p-4 border rounded-lg"
                   >
-                    <div className="flex-shrink-0 mt-1">
-                      {/* {getNotificationIcon(notification.type)} */}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h3 className={`font-medium text-sm `}>
-                              {notification.type}
-                            </h3>
-                            
-                          </div>
-                          <p className="text-sm text-muted-foreground mb-2">
-                            {notification.message}
-                          </p>
-                          <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                            <span>{new Date(notification.createdAt).toLocaleDateString()}</span>
-                            <span>•</span>
-                            <span>
-                              {/* {formatTimestamp(notification.timestamp)} */}
-                            </span>
-                            {/* {notification.actionRequired && (
-                            <>
-                              <span>•</span>
-                              <Badge variant="outline" className="text-xs">
-                                Action Required
-                              </Badge>
-                            </>
-                          )} */}
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          {/* {getPriorityBadge(notification.priority)} */}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
+                    
+                    <div className="flex justify-end items-center gap-2">
                       {/* {!notification.isRead && (
                     )} */}
                       <Button
@@ -213,6 +178,31 @@ const AllNotification = () => {
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <h3 className={`font-medium text-sm `}>
+                              {notification.type}
+                            </h3>
+                            
+                          </div>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            {notification.message}
+                          </p>
+                          <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                            <span>{new Date(notification.createdAt).toLocaleDateString()}</span>
+                            <span>•</span>
+                            <span>
+                              
+                            </span>
+                            
+                          </div>
+                        </div>
+                        
+                      </div>
+                    </div>
+                    
                   </div>
                 ))
               )}
