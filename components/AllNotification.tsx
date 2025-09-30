@@ -167,15 +167,13 @@ const AllNotification = () => {
                             <h3 className={`font-medium text-sm `}>
                               {notification.type}
                             </h3>
-                            {/* {!notification.isRead && (
-                            <div className="w-2 h-2 bg-accent rounded-full"></div>
-                          )} */}
+                            
                           </div>
                           <p className="text-sm text-muted-foreground mb-2">
                             {notification.message}
                           </p>
                           <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                            <span>notification.vehicle</span>
+                            <span>{new Date(notification.createdAt).toLocaleDateString()}</span>
                             <span>•</span>
                             <span>
                               {/* {formatTimestamp(notification.timestamp)} */}
