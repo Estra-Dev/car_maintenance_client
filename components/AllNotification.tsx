@@ -139,7 +139,7 @@ const AllNotification = () => {
         <Card>
           <CardHeader>
             <CardTitle>
-              Notifications ({thisWeekNotifications.length.toString()})
+              Notifications {/*({thisWeekNotifications.length.toString()})*/}
             </CardTitle>
             <CardDescription>
               Your Vehicle management alerts and updates
