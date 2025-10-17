@@ -112,7 +112,7 @@ const AllNotification = () => {
   }
 
   return (
-    <div>
+    <div className=" w-full">
       {/* Stat overview */}
       <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 mt-4">
         {notificationStat.map((stat, index) => (

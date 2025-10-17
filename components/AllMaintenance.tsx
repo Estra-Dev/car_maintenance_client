@@ -73,6 +73,11 @@ const AllMaintenance = () => {
     note: "",
   });
 
+  const formatted = new Intl.NumberFormat('en-NG', {
+    style: 'currency',
+    currency: 'NGN',
+  });
+
   const maintenanceStats = [
     {
       title: "Upcoming Services",
@@ -97,8 +102,8 @@ const AllMaintenance = () => {
     },
     {
       title: "Total Cost",
-      icon: <DollarSign className=" text-foreground w-4 h-4" />,
-      value: `#${totalCost}`,
+      icon: formatted.format(0),
+      value: `${formatted.format(totalCost)}`,
       text: "This month",
       textColor: "text-gray-500",
     },
@@ -140,7 +145,7 @@ const AllMaintenance = () => {
         })
 
       const totalCostThisMonth = totalServicesThisMonth.reduce(
-        (acc: number, task: MaintenanceTask) => acc + task.estimatedCost,
+        (total: number, task: MaintenanceTask) => total + task.estimatedCost,
         0
       );
       

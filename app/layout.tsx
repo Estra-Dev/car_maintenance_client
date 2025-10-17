@@ -32,8 +32,9 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={` relative ${geistSans.variable} ${geistMono.variable} antialiased bg-[url('/logo.png')] bg-no-repeat bg-center bg-cover md:bg-contain min-h-screen`}
         >
+          <div className="absolute inset-0 bg-white/40"></div>
           <RootLayoutClient>
             <Nav />
             <SideBar />
