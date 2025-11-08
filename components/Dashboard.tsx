@@ -61,50 +61,6 @@ const Dashboard = () => {
   const [almosDueMaintenance, setAlmosDueMaintenance] = useState<MaintenanceTask[]>([]);
   const [expiringSoonDocuments, setExpiringSoonDocuments] = useState<DocumentTask[]>([]);
 
-  // const getMaintenanceAlerts = () => {
-  //   const currentDate = new Date();
-  //   let due = 0;
-  //   let dueSoon = 0;
-  //   let active = 0;
-  //   maintenance.forEach((task) => {
-  //     const taskDate = new Date(task.nextServiceDate);
-  //     const dayUntilTask = Math.ceil(
-  //       (taskDate.getTime() - currentDate.getTime()) / (1000 * 3600 * 24)
-  //     );
-  //     console.log("dayUntilTask", dayUntilTask);
-  //     if (dayUntilTask < 0) {
-  //       due++;
-  //     } else if (dayUntilTask <= 30) {
-  //       dueSoon++;
-  //     } else {
-  //       active++;
-  //     }
-  //   });
-
-  //   return { due, dueSoon, active };
-  // };
-
-  // const getDocumentAlerts = () => {
-  //   const currentDate = new Date();
-  //   let expired = 0;
-  //   let expiringSoon = 0;
-  //   documents.forEach((doc) => {
-  //     const docDate = new Date(doc.expiryDate);
-  //     const dayUntilDocExpiry = Math.ceil(
-  //       (docDate.getTime() - currentDate.getTime()) / (1000 * 3600 * 24)
-  //     );
-  //     if (dayUntilDocExpiry < 0) {
-  //       expired++;
-  //     } else if (dayUntilDocExpiry <= 30) {
-  //       expiringSoon += 1;
-  //     }
-  //   });
-
-  //   return { expired, expiringSoon };
-  // };
-
-  // const documentAlerts = getDocumentAlerts();
-  // const maintenanceAlerts = getMaintenanceAlerts();
   const activeVehicles = vehicles.filter(v => v.status === "active").length;
   // const inMaintenanceVehicles = vehicles.filter(v => v.status === "in maintenance").length;
   const serviceDueVehicles = vehicles.filter(v => v.status === "service due").length;

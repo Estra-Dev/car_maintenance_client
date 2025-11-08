@@ -9,6 +9,7 @@ import axios from 'axios';
 import { Button } from './ui/button';
 import DocAlert from './DocAlert';
 import { Dialog, DialogHeader, DialogContent, DialogTitle } from "./ui/dialog";
+import AddDocument from './AddDocument';
 
 interface DocumentTask {
   _id: string;
@@ -125,7 +126,7 @@ const AllDocuments = () => {
     }
   };
 
-  console.log("documents", documents);
+  // console.log("documents", documents);
   useEffect(() => {
     allDocuments();
     allVehicles();
@@ -150,6 +151,7 @@ const AllDocuments = () => {
 
       if (res.status === 200) {
         alert("Deleted Successfully")
+        allDocuments()
       }else{
         alert("Something went wrong")
       }
@@ -158,32 +160,33 @@ const AllDocuments = () => {
     }
   }
 
-    const handleChange = (ev: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      const {name, value} = ev.target
-      setFormData({...formData, [name]: value})
-      
+  const handleChange = (ev: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const {name, value} = ev.target
+    setFormData({...formData, [name]: value})
+    
+  }
+  console.log("formData", formData)
+
+
+  const handleEdit = async (ev: React.FormEvent<HTMLFormElement>) => {
+    console.log("Edit", editId);
+    ev.preventDefault()
+
+    const res = await axios.patch(`/api/documents/${editId}`, formData);
+
+    if (res.status === 200) {
+      console.log("Done");
+      alert("Documented Updated");
+      setEdit(false);
+    } else {
+      alert("Error Updating Document");
     }
-    console.log("formData", formData)
-
-
-    const handleEdit = async (ev: React.FormEvent<HTMLFormElement>) => {
-      console.log("Edit", editId);
-      ev.preventDefault()
-
-      const res = await axios.patch(`/api/documents/${editId}`, formData);
-
-      if (res.status === 200) {
-        console.log("Done");
-        alert("Documented Updated");
-        setEdit(false);
-      } else {
-        alert("Error Updating Document");
-      }
-    };
+  };
 
 
   return (
     <div>
+      <AddDocument onDocumentAdded={allDocuments} />
       {/* Banner Alert */}
       <DocAlert />
 

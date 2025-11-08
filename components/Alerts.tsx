@@ -74,7 +74,7 @@ const Alerts = () => {
       const nextTaskDate = new Date(task.nextServiceDate)
       const dayUntilTask = Math.ceil((taskDate.getTime() - currentDate.getTime()) / (1000 * 3600 * 24));
       const dayUntilNextTask = Math.ceil((nextTaskDate.getTime() - currentDate.getTime()) / (1000 * 3600 * 24));
-      console.log("dayUntilTask", dayUntilTask);
+      // console.log("dayUntilTask", dayUntilTask);
       if (dayUntilTask < 0) {
         due ++;
       } 
@@ -108,7 +108,7 @@ const Alerts = () => {
 
   
 
-  console.log("documents", documents);
+  // console.log("documents", documents);
   
   console.log("All maintenance", maintenance);
   useEffect(() => {

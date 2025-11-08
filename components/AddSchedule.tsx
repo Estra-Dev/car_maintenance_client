@@ -34,7 +34,11 @@ interface Vehicle {
   nextService: string;
 }
 
-const AddSchedule = () => {
+interface AddScheduleProps {
+  onScheduleAdded?: () => void;
+}
+
+const AddSchedule = ({onScheduleAdded}: AddScheduleProps) => {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [isAddDialog, setIsAddDialog] = useState(false);
   const [error, setError] = useState("");
@@ -69,7 +73,7 @@ const AddSchedule = () => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
-  console.log("formDate", formData);
+  // console.log("formDate", formData);         
 
   
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -108,6 +112,10 @@ const AddSchedule = () => {
           estimatedCost: "",
           note: "",
         });
+
+        if (onScheduleAdded) {
+          onScheduleAdded();
+        }
       }
     } catch (error: unknown) {
       if (error instanceof Error) {

@@ -75,14 +75,13 @@ const AllNotification = () => {
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }
-
   };
 
   const markAsRead = async (id: string) => {
     try {
       const res = await axios.patch(`/api/notifications/${id}/read`)
       if (res.status === 200 ) {
-        console.log("Noti read")
+        // console.log("Noti read")
         setRead(true)
       }
     } catch (error) {
@@ -105,6 +104,7 @@ const AllNotification = () => {
       })
       if (res.status === 200) {
         alert("Deleted Successfully")
+        getNotifications()
       }
     } catch (error) {
       console.log("Error Deleting", error)

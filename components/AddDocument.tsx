@@ -19,92 +19,100 @@ interface Vehicle {
   nextService: string;
 }
 
-const AddDocument = () => {
+interface AddDocumentProps {
+  // You can add props if needed
+  onDocumentAdded?: () => void;
+}
+
+const AddDocument = ({onDocumentAdded}: AddDocumentProps) => {
 
     const [vehicles, setVehicles] = useState<Vehicle[]>([]);
-     const [isAddDialog, setIsAddDialog] = useState(false);
-      const [error, setError] = useState("");
-      const [success, setSuccess] = useState("");
-      const [formData, setFormData] = useState({
-        vehicle: "",
-        documentType: "",
-        issueDate: "",
-        expiryDate: "",
-        documentNumber: "",
-        issuingAuth: "",
-        reminderDayBeforeExpiry: "",
-      });
+    const [isAddDialog, setIsAddDialog] = useState(false);
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
+    const [formData, setFormData] = useState({
+      vehicle: "",
+      documentType: "",
+      issueDate: "",
+      expiryDate: "",
+      documentNumber: "",
+      issuingAuth: "",
+      reminderDayBeforeExpiry: "",
+    });
 
-      const allVehicles = async () => {
-        try {
-          const response = await axios.get("/api/vehicles/vehicles");
-          setVehicles(response.data.vehicles);
-        } catch (error) {
-          console.error("Error fetching vehicles:", error);
-        }
-      };
+    const allVehicles = async () => {
+      try {
+        const response = await axios.get("/api/vehicles/vehicles");
+        setVehicles(response.data.vehicles);
+      } catch (error) {
+        console.error("Error fetching vehicles:", error);
+      }
+    };
 
-      useEffect(() => {
-          allVehicles();
-        }, []);
+    useEffect(() => {
+        allVehicles();
+    }, []);
     
-      const handleChange = (
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-      ) => {
-        // Handle input change
-        const { name, value } = event.target;
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
-      };
-      console.log("formDate", formData);
+    const handleChange = (
+      event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+      // Handle input change
+      const { name, value } = event.target;
+      setFormData((prevData) => ({ ...prevData, [name]: value }));
+    };
+    // console.log("formDate", formData);
 
-      const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setError("");
-    setSuccess("");
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      setError("");
+      setSuccess("");
 
-    // Validate form data
-    if (
-      !formData.vehicle ||
-      !formData.documentType ||
-      !formData.issueDate ||
-      !formData.expiryDate ||
-      !formData.documentNumber ||
-      !formData.issuingAuth ||
-      !formData.reminderDayBeforeExpiry
-    ) {
-      setError("Please fill in all fields.");
-      return;
-    }
+      // Validate form data
+      if (
+        !formData.vehicle ||
+        !formData.documentType ||
+        !formData.issueDate ||
+        !formData.expiryDate ||
+        !formData.documentNumber ||
+        !formData.issuingAuth ||
+        !formData.reminderDayBeforeExpiry
+      ) {
+        setError("Please fill in all fields.");
+        return;
+      }
 
-    try {
-      const res = await axios.post("/api/documents/create", formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (res.status === 201) {
-        setSuccess("Document added successfully.");
-        setFormData({
-          vehicle: "",
-          documentType: "",
-          issueDate: "",
-          expiryDate: "",
-          documentNumber: "",
-          issuingAuth: "",
-          reminderDayBeforeExpiry: "",
+      try {
+        const res = await axios.post("/api/documents/create", formData, {
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
+        if (res.status === 201) {
+          setSuccess("Document added successfully.");
+          setFormData({
+            vehicle: "",
+            documentType: "",
+            issueDate: "",
+            expiryDate: "",
+            documentNumber: "",
+            issuingAuth: "",
+            reminderDayBeforeExpiry: "",
+          });
+          if (onDocumentAdded) {
+            onDocumentAdded();
+          }
 
-        setIsAddDialog(false);
+          setIsAddDialog(false);
+        }
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setError(`Failed to add Document. ${error.message}`);
+        } else {
+          setError("Failed to add Document.");
+        }
       }
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setError(`Failed to add Document. ${error.message}`);
-      } else {
-        setError("Failed to add Document.");
-      }
-    }
 
-    // Handle form submission
+      // Handle form submission
   };
 
   return (

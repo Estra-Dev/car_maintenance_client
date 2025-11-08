@@ -21,7 +21,12 @@ import {
 import { Plus } from "lucide-react";
 import axios from "axios";
 
-const AddVehicles = () => {
+interface AddVehicleProps {
+  onVehicleAdded?: () => void;
+}
+
+
+const AddVehicles = ({onVehicleAdded}: AddVehicleProps) => {
   const [isAddDialog, setIsAddDialog] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -74,6 +79,11 @@ const AddVehicles = () => {
           assignedTo: "",
           department: "",
         });
+
+        if (onVehicleAdded) {
+          onVehicleAdded();
+        }
+
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -82,7 +92,6 @@ const AddVehicles = () => {
         setError("Failed to add vehicle.");
       }
     }
-
     setIsAddDialog(false);
     // Handle form submission
   };

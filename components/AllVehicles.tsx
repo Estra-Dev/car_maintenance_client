@@ -27,6 +27,7 @@ import axios from "axios";
 import { Edit, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Dialog,DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
+import AddVehicles from "./AddVehicles";
 
 interface Vehicle {
   _id: string;
@@ -77,8 +78,8 @@ const AllVehicles = () => {
     }
   }
 
-  console.log("status", status);
-  console.log("vehicles", vehicles);
+  // console.log("status", status);
+  // console.log("vehicles", vehicles);
 
   useEffect(() => {
     allVehicles();
@@ -115,7 +116,7 @@ const AllVehicles = () => {
     const {name, value} = ev.target
     setFormData({...formData, [name]: value})
   }
-  console.log("Edit", formData)
+  // console.log("Edit", formData)
 
   const handleEdit = async (ev: React.ChangeEvent<HTMLFormElement>) => {
     ev.preventDefault()
@@ -123,7 +124,7 @@ const AllVehicles = () => {
     const res = await axios.patch(`/api/vehicles/${editId}`, formData);
 
       if (res.status === 200) {
-        console.log("Done");
+        // console.log("Done");
         alert("Documented Updated");
         setEdit(false);
       } else {
@@ -134,6 +135,7 @@ const AllVehicles = () => {
   return (
     <div>
       <Card className=" mb-4">
+        <AddVehicles onVehicleAdded={allVehicles} />
         <CardHeader>
           <CardTitle>Vehicle Make</CardTitle>
           <CardDescription>Search and filter your vehicles</CardDescription>

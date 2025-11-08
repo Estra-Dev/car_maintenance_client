@@ -28,6 +28,7 @@ import axios from "axios";
 import { Dialog, DialogHeader, DialogContent, DialogTitle } from "./ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Button } from "./ui/button";
+import AddSchedule from "./AddSchedule";
 
 interface MaintenanceTask {
   _id: string;
@@ -185,6 +186,7 @@ const AllMaintenance = () => {
 
       if (res.status === 200) {
         alert("Deleted Successful")
+        allMaintenance()
       }else{
         alert("Something went wrong")
       }
@@ -198,7 +200,7 @@ const AllMaintenance = () => {
     const {name, value} = ev.target
     setFormData({...formData, [name]: value})
   }
-  console.log(formData)
+  // console.log(formData)
 
   const handleEdit = async (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault()
@@ -216,6 +218,7 @@ const AllMaintenance = () => {
 
   return (
     <div className="">
+      <AddSchedule onScheduleAdded={allMaintenance} />
       <div className=" grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-4 gap-4">
         {maintenanceStats.map((stat) => (
           <Card className=" mt-4" key={stat.title}>
